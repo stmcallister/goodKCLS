@@ -36,7 +36,7 @@ function searchLibrary(bookTitle, tab){
 	bookTitle = '';
 }
 
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 	// get title from goodreads meta tag
 	bookTitle = getBookTitle(request.bookTitle);
 	searchLibrary(bookTitle, currentTab);
@@ -49,7 +49,8 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 });
 
 chrome.pageAction.onClicked.addListener(function(tab) {
-	chrome.tabs.executeScript(null, {file: "goodcontentscript.js"});
+	console.log("CLICKED");
+	chrome.tabs.executeScript(null, { file: "testing.js" });
 });
 
 chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
@@ -57,7 +58,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 		currentTab = tab;
 		libUrl = "http://catalog.kcls.org/eg/opac/results?qtype=title&query=";
 		
-		if(currentTab.url.match(/\b(http\:\/\/www\.goodreads\.com\/book\/show\/)/i)){
+		if(currentTab.url.match(/\b(http(s)?\:\/\/www\.goodreads\.com\/book\/show\/)/i)){
 			chrome.pageAction.show(tab.id);
 		} else {
 			chrome.pageAction.hide(tab.id);
@@ -67,11 +68,11 @@ chrome.tabs.onUpdated.addListener(function(tabId, change, tab) {
 
 // analytics code to track extension usage
 	var _gaq = _gaq || [];
-	_gaq.push(['_setAccount', 'UA-29102263-1']);
+	_gaq.push(['_setAccount', ' ']);
 	_gaq.push(['_trackPageview']);
 
 	(function() {
 	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	ga.src = 'https://ssl.google-analytics.com/ga.js';
 	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 	})();
